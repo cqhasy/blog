@@ -22,7 +22,7 @@ jobs:
         with:
           path: .          # Astro 项目根目录
           node-version: 20 # Node.js 版本
-          package-manager: pnpm@latest
+          package-manager: pnpm
 
   deploy:
     needs: build
