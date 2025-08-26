@@ -29,8 +29,8 @@ export function setHue(hue: number): void {
 
 export function applyThemeToDocument(theme: LIGHT_DARK_MODE) {
 	// 添加防闪烁类，禁用所有过渡
-	document.documentElement.classList.add('theme-changing');
-	
+	document.documentElement.classList.add("theme-changing");
+
 	// 使用 requestAnimationFrame 确保 DOM 更新的时序
 	requestAnimationFrame(() => {
 		switch (theme) {
@@ -54,10 +54,10 @@ export function applyThemeToDocument(theme: LIGHT_DARK_MODE) {
 			"data-theme",
 			expressiveCodeConfig.theme,
 		);
-		
+
 		// 在下一帧移除防闪烁类，恢复过渡效果
 		requestAnimationFrame(() => {
-			document.documentElement.classList.remove('theme-changing');
+			document.documentElement.classList.remove("theme-changing");
 		});
 	});
 }
