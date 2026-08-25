@@ -39,7 +39,6 @@ export const ko: Translation = {
 	[Key.license]: "라이선스",
 	[Key.friends]: "친구",
 	[Key.anime]: "애니메이션",
-	[Key.diary]: "일상",
 
 	// 추번통계
 	[Key.animeTotal]: "총계",
@@ -47,16 +46,6 @@ export const ko: Translation = {
 	[Key.animeCompleted]: "시청 완료",
 	[Key.animeStatusWatching]: "시청 중",
 	[Key.animeStatusCompleted]: "시청 완료",
-
-	// 단문 페이지
-	[Key.diarySubtitle]: "언제 어디서나, 일상을 공유",
-	[Key.diaryCount]: "개의 일상",
-	[Key.diaryImage]: "이미지",
-	[Key.diaryReply]: "답글",
-	[Key.diaryTips]: "최근 30개의 일상만 표시",
-	[Key.diaryMinutesAgo]: "분 전",
-	[Key.diaryHoursAgo]: "시간 전",
-	[Key.diaryDaysAgo]: "일 전",
 
 	// 404페이지
 	[Key.notFound]: "404",

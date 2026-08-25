@@ -13,14 +13,16 @@ import type {
 import { LinkPreset } from "./types/config";
 import { getTranslateLanguageFromConfig } from "./utils/language-utils";
 
-// 移除i18n导入以避免循环依赖
+// 个人主页链接集中维护，避免导航栏与侧边栏出现不一致
+const GITHUB_PROFILE_URL = "https://github.com/cqhasy";
+const GITEE_PROFILE_URL = "https://gitee.com/cqhasy";
 
 // 定义站点语言
 const SITE_LANG = "zh_CN"; // 语言代码，例如：'en', 'zh_CN', 'ja' 等。
 
 export const siteConfig: SiteConfig = {
 	title: "昊の月",
-	subtitle: "你相信键盘也能演奏乐曲吗",
+	subtitle: "Go 后端 · AI Agent · 工程实践",
 
 	lang: SITE_LANG,
 
@@ -75,9 +77,9 @@ export const siteConfig: SiteConfig = {
 			title: "昊の月", // 主页横幅主标题
 
 			subtitle: [
-				"Learn something interest",
-				"Do something best",
-				"With someone important",
+				"用 Go 构建可靠服务",
+				"探索 AI Agent 的更多可能",
+				"把学习沉淀为可以复用的经验",
 			], // 主页横幅副标题，支持多文本
 			typewriter: {
 				enable: true, // 启用副标题打字机效果
@@ -125,7 +127,7 @@ export const navBarConfig: NavBarConfig = {
 			children: [
 				{
 					name: "GitHub",
-					url: "https://github.com/cqhasy",
+					url: GITHUB_PROFILE_URL,
 					external: true,
 					icon: "fa6-brands:github",
 				},
@@ -137,17 +139,29 @@ export const navBarConfig: NavBarConfig = {
 				},
 				{
 					name: "Gitee",
-					url: "https://gitee.com/cqhasy",
+					url: GITEE_PROFILE_URL,
 					external: true,
 					icon: "mdi:git",
 				},
 			],
 		},
 		{
-			name: "我的",
+			name: "作品",
 			url: "#",
-			icon: "material-symbols:person",
-			children: [LinkPreset.Anime, LinkPreset.Diary, LinkPreset.Gallery],
+			icon: "material-symbols:rocket-launch-outline",
+			children: [
+				{
+					name: "项目展示",
+					url: "/projects/",
+					icon: "material-symbols:deployed-code-outline",
+				},
+				{
+					name: "技能展示",
+					url: "/skills/",
+					icon: "material-symbols:code-blocks-outline",
+				},
+				LinkPreset.Anime,
+			],
 		},
 		{
 			name: "关于",
@@ -161,7 +175,7 @@ export const navBarConfig: NavBarConfig = {
 export const profileConfig: ProfileConfig = {
 	avatar: "assets/images/avatar2.jpg", // 相对于 /src 目录。如果以 '/' 开头，则相对于 /public 目录
 	name: "Cqhasy",
-	bio: "欢迎访问我的博客！",
+	bio: "华中师范大学本科生 · Go / AI Agent 开发者",
 	links: [
 		{
 			name: "Bilibili",
@@ -171,12 +185,12 @@ export const profileConfig: ProfileConfig = {
 		{
 			name: "Gitee",
 			icon: "mdi:git",
-			url: "https://gitee.com/cqhasy",
+			url: GITEE_PROFILE_URL,
 		},
 		{
 			name: "GitHub",
 			icon: "fa6-brands:github",
-			url: "https://github.com/cqhasy",
+			url: GITHUB_PROFILE_URL,
 		},
 	],
 	// Umami统计部份，记得在layout插入Umami的head标签
@@ -208,12 +222,12 @@ export const commentConfig: CommentConfig = {
 
 export const announcementConfig: AnnouncementConfig = {
 	title: "公告", // 公告标题
-	content: "欢迎来到我的博客！分享技术，传递热爱！", // 公告内容
+	content: "这里记录 Go 后端、AI Agent、开发者工具与工程实践。近期正在持续完善 AI PR Review 与智能 Agent 相关项目。", // 公告内容
 	closable: true, // 允许用户关闭公告
 	link: {
 		enable: true, // 启用链接
-		text: "了解更多", // 链接文本
-		url: "/about/", // 链接 URL
+		text: "查看项目", // 链接文本
+		url: "/projects/", // 链接 URL
 		external: false, // 内部链接
 	},
 };

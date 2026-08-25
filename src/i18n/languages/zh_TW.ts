@@ -39,7 +39,6 @@ export const zh_TW: Translation = {
 	[Key.license]: "許可協議",
 	[Key.friends]: "友鏈",
 	[Key.anime]: "追番",
-	[Key.diary]: "即刻短文",
 
 	// 追番統計
 	[Key.animeTotal]: "總數",
@@ -47,16 +46,6 @@ export const zh_TW: Translation = {
 	[Key.animeCompleted]: "已追完",
 	[Key.animeStatusWatching]: "追番中",
 	[Key.animeStatusCompleted]: "已追完",
-
-	// 短文頁面
-	[Key.diarySubtitle]: "隨時隨地，分享生活",
-	[Key.diaryCount]: "條短文",
-	[Key.diaryImage]: "圖片",
-	[Key.diaryReply]: "回覆",
-	[Key.diaryTips]: "只展示最近30條短文",
-	[Key.diaryMinutesAgo]: "分鐘前",
-	[Key.diaryHoursAgo]: "小時前",
-	[Key.diaryDaysAgo]: "天前",
 
 	// 404頁面
 	[Key.notFound]: "404",

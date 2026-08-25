@@ -37,7 +37,6 @@ export const th: Translation = {
 	[Key.license]: "สัญญาอนุญาต",
 	[Key.friends]: "เพื่อน",
 	[Key.anime]: "อนิเมะ",
-	[Key.diary]: "ช่วงเวลา",
 
 	// สถิติอนิเมะ
 	[Key.animeTotal]: "ทั้งหมด",
@@ -45,16 +44,6 @@ export const th: Translation = {
 	[Key.animeCompleted]: "ดูจบแล้ว",
 	[Key.animeStatusWatching]: "กำลังดู",
 	[Key.animeStatusCompleted]: "ดูจบแล้ว",
-
-	// หน้าไดอารี่
-	[Key.diarySubtitle]: "แบ่งปันชีวิตได้ทุกที่ทุกเวลา",
-	[Key.diaryCount]: "ช่วงเวลา",
-	[Key.diaryImage]: "รูปภาพ",
-	[Key.diaryReply]: "ตอบกลับ",
-	[Key.diaryTips]: "แสดงเฉพาะ 30 ช่วงเวลาล่าสุด",
-	[Key.diaryMinutesAgo]: "นาทีที่แล้ว",
-	[Key.diaryHoursAgo]: "ชั่วโมงที่แล้ว",
-	[Key.diaryDaysAgo]: "วันที่แล้ว",
 
 	// หน้า 404
 	[Key.notFound]: "404",

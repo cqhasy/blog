@@ -43,7 +43,6 @@ export const zh_CN: Translation = {
 	[Key.publishedAt]: "发布于",
 	[Key.license]: "许可协议",
 	[Key.anime]: "追番",
-	[Key.diary]: "日记",
 
 	// 追番统计
 	[Key.animeTotal]: "总数",
@@ -51,16 +50,6 @@ export const zh_CN: Translation = {
 	[Key.animeCompleted]: "已追完",
 	[Key.animeStatusWatching]: "追番中",
 	[Key.animeStatusCompleted]: "已追完",
-
-	// 短文页面
-	[Key.diarySubtitle]: "随时随地，分享生活",
-	[Key.diaryCount]: "条短文",
-	[Key.diaryImage]: "图片",
-	[Key.diaryReply]: "回复",
-	[Key.diaryTips]: "只展示最近30条日记",
-	[Key.diaryMinutesAgo]: "分钟前",
-	[Key.diaryHoursAgo]: "小时前",
-	[Key.diaryDaysAgo]: "天前",
 
 	// 404页面
 	[Key.notFound]: "404",
@@ -70,27 +59,6 @@ export const zh_CN: Translation = {
 
 	// 音乐播放器
 	[Key.playlist]: "播放列表",
-
-	// 相册
-	[Key.gallery]: "相册",
-	[Key.gallerySubtitle]: "记录和分享美好瞬间",
-	[Key.galleryGroups]: "相册组",
-	[Key.galleryCreateGroup]: "创建相册组",
-	[Key.galleryGroupName]: "相册组名称",
-	[Key.galleryGroupDescription]: "相册组描述",
-	[Key.galleryGroupCover]: "封面图片",
-	[Key.galleryUploadImages]: "上传图片",
-	[Key.galleryImageCount]: "张图片",
-	[Key.galleryImagesCount]: "张图片",
-	[Key.galleryViewAll]: "查看全部",
-	[Key.galleryEdit]: "编辑",
-	[Key.galleryDelete]: "删除",
-	[Key.gallerySort]: "排序",
-	[Key.galleryComments]: "评论",
-	[Key.galleryAddComment]: "添加评论",
-	[Key.galleryNoGroups]: "暂无相册组",
-	[Key.galleryNoImages]: "该相册组暂无图片",
-	[Key.galleryCreateFirst]: "创建您的第一个相册组",
 
 	// 项目展示页面
 	[Key.projects]: "项目展示",

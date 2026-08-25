@@ -1,0 +1,110 @@
+---
+import { Icon } from "astro-icon/components";
+import { portfolioProjects, skillGroups } from "../data/portfolio";
+import { url } from "../utils/url-utils";
+
+const featuredProjects = portfolioProjects.filter((project) => project.featured).slice(0, 3);
+const focusAreas = skillGroups.slice(0, 4);
+---
+
+<section class="home-intro card-base overflow-hidden onload-animation">
+	<div class="intro-hero p-6 md:p-8">
+		<div class="relative z-10 max-w-3xl">
+			<div class="inline-flex items-center gap-2 rounded-full bg-white/70 dark:bg-black/20 px-3 py-1.5 text-sm font-medium text-[var(--primary)] mb-4">
+				<span class="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>
+				持续学习，也持续构建
+			</div>
+			<h1 class="text-3xl md:text-4xl font-bold text-90 mb-4">你好，我是 Cqhasy</h1>
+			<p class="text-base md:text-lg text-75 leading-8 mb-5">
+				华中师范大学本科生、木犀团队成员，主要关注 <strong class="text-90">Go 后端、AI Agent 与工程效率工具</strong>。
+				这里记录技术探索、项目实践，以及把想法变成可运行产品的过程。
+			</p>
+			<div class="flex flex-wrap gap-2 mb-6">
+				{["Go Backend", "AI Agent", "Developer Tools", "Open Source"].map((tag) => (
+					<span class="rounded-lg bg-[var(--btn-regular-bg)] px-3 py-1.5 text-sm text-75">{tag}</span>
+				))}
+			</div>
+			<div class="flex flex-wrap gap-3">
+				<a href={url("/projects/")} class="btn-regular rounded-xl px-4 py-2.5 font-medium active:scale-95">
+					<Icon name="material-symbols:rocket-launch-outline" class="mr-2 text-lg" />查看项目
+				</a>
+				<a href={url("/skills/")} class="btn-regular rounded-xl px-4 py-2.5 font-medium active:scale-95">
+					<Icon name="material-symbols:code-blocks-outline" class="mr-2 text-lg" />了解技能
+				</a>
+				<a href="https://github.com/cqhasy" target="_blank" rel="noopener noreferrer" class="btn-regular rounded-xl px-4 py-2.5 font-medium active:scale-95">
+					<Icon name="fa6-brands:github" class="mr-2 text-lg" />GitHub
+				</a>
+				<a href="https://gitee.com/cqhasy" target="_blank" rel="noopener noreferrer" class="btn-regular rounded-xl px-4 py-2.5 font-medium active:scale-95">
+					<Icon name="mdi:git" class="mr-2 text-lg" />Gitee
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="grid gap-6 border-t border-[var(--line-divider)] p-6 md:p-8 lg:grid-cols-[1.35fr_1fr]">
+		<div>
+			<div class="flex items-center justify-between mb-4">
+				<div>
+					<p class="text-xs uppercase tracking-[0.2em] text-[var(--primary)] font-bold mb-1">Featured work</p>
+					<h2 class="text-xl font-bold text-90">正在构建的项目</h2>
+				</div>
+				<a href={url("/projects/")} class="text-sm font-medium text-[var(--primary)] hover:underline">全部项目 →</a>
+			</div>
+			<div class="space-y-3">
+				{featuredProjects.map((project) => (
+					<a href={project.repo} target="_blank" rel="noopener noreferrer" class="project-row group block rounded-xl border border-[var(--line-divider)] p-4 hover:border-[var(--primary)]/40">
+						<div class="flex gap-3">
+							<div class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--btn-regular-bg)] text-[var(--primary)]">
+								<Icon name={project.icon} class="text-xl" />
+							</div>
+							<div class="min-w-0">
+								<div class="flex flex-wrap items-center gap-2 mb-1">
+									<h3 class="font-bold text-90 group-hover:text-[var(--primary)] transition">{project.name}</h3>
+									<span class="text-xs rounded-full bg-[var(--btn-regular-bg)] px-2 py-0.5 text-50">{project.status}</span>
+								</div>
+								<p class="text-sm leading-6 text-75 line-clamp-2">{project.description}</p>
+							</div>
+						</div>
+					</a>
+				))}
+			</div>
+		</div>
+
+		<div>
+			<p class="text-xs uppercase tracking-[0.2em] text-[var(--primary)] font-bold mb-1">Focus</p>
+			<h2 class="text-xl font-bold text-90 mb-4">当前技术方向</h2>
+			<div class="grid grid-cols-2 gap-3">
+				{focusAreas.map((group) => (
+					<a href={url("/skills/")} class="focus-card rounded-xl border border-[var(--line-divider)] p-4 hover:border-[var(--primary)]/40">
+						<Icon name={group.icon} class="text-2xl mb-3" style={`color: ${group.accent}`} />
+						<div class="font-bold text-90 text-sm mb-1">{group.title}</div>
+						<div class="text-xs text-50">{group.skills[0].name} · {group.skills[1].name}</div>
+					</a>
+				))}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.home-intro { animation-delay: calc(var(--content-delay) + 25ms); }
+	.intro-hero {
+		position: relative;
+		background:
+			radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 34%),
+			linear-gradient(135deg, color-mix(in srgb, var(--primary) 9%, var(--card-bg)), var(--card-bg));
+	}
+	.intro-hero::after {
+		content: "</>";
+		position: absolute;
+		right: 2rem;
+		top: 50%;
+		transform: translateY(-50%);
+		font: 700 clamp(5rem, 12vw, 9rem) / 1 monospace;
+		color: color-mix(in srgb, var(--primary) 9%, transparent);
+		pointer-events: none;
+	}
+	.project-row, .focus-card { transition: transform .2s ease, border-color .2s ease, background-color .2s ease; }
+	.project-row:hover, .focus-card:hover { transform: translateY(-2px); background: color-mix(in srgb, var(--primary) 4%, transparent); }
+	@media (max-width: 640px) { .intro-hero::after { display: none; } }
+</style>

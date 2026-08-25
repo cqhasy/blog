@@ -37,7 +37,6 @@ export const tr: Translation = {
 	[Key.license]: "Lisans",
 	[Key.friends]: "Arkadaşlar",
 	[Key.anime]: "Anime",
-	[Key.diary]: "Anlar",
 
 	// Anime istatistikleri
 	[Key.animeTotal]: "Toplam",
@@ -45,16 +44,6 @@ export const tr: Translation = {
 	[Key.animeCompleted]: "Tamamlandı",
 	[Key.animeStatusWatching]: "İzleniyor",
 	[Key.animeStatusCompleted]: "Tamamlandı",
-
-	// Günlük sayfası
-	[Key.diarySubtitle]: "Her zaman, her yerde hayatı paylaş",
-	[Key.diaryCount]: "gönderi",
-	[Key.diaryImage]: "Resim",
-	[Key.diaryReply]: "Yanıtla",
-	[Key.diaryTips]: "Sadece son 30 gönderi gösteriliyor",
-	[Key.diaryMinutesAgo]: "dakika önce",
-	[Key.diaryHoursAgo]: "saat önce",
-	[Key.diaryDaysAgo]: "gün önce",
 
 	// 404 Sayfası
 	[Key.notFound]: "404",
