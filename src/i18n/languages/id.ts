@@ -37,7 +37,6 @@ export const id: Translation = {
 	[Key.license]: "Lisensi",
 	[Key.friends]: "Teman",
 	[Key.anime]: "Anime",
-	[Key.diary]: "Momen",
 
 	// Statistik anime
 	[Key.animeTotal]: "Total",
@@ -45,16 +44,6 @@ export const id: Translation = {
 	[Key.animeCompleted]: "Selesai",
 	[Key.animeStatusWatching]: "Sedang Ditonton",
 	[Key.animeStatusCompleted]: "Selesai",
-
-	// Halaman momen
-	[Key.diarySubtitle]: "Berbagi kehidupan kapan saja, di mana saja",
-	[Key.diaryCount]: "momen",
-	[Key.diaryImage]: "Gambar",
-	[Key.diaryReply]: "Balas",
-	[Key.diaryTips]: "Hanya menampilkan 30 momen terbaru",
-	[Key.diaryMinutesAgo]: "menit yang lalu",
-	[Key.diaryHoursAgo]: "jam yang lalu",
-	[Key.diaryDaysAgo]: "hari yang lalu",
 
 	// Halaman 404
 	[Key.notFound]: "404",

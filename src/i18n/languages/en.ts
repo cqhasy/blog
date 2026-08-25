@@ -44,7 +44,6 @@ export const en: Translation = {
 	[Key.license]: "License",
 	[Key.friends]: "Friends",
 	[Key.anime]: "Anime",
-	[Key.diary]: "Moments",
 
 	// 追番统计
 	[Key.animeTotal]: "Total",
@@ -52,16 +51,6 @@ export const en: Translation = {
 	[Key.animeCompleted]: "Completed",
 	[Key.animeStatusWatching]: "Watching",
 	[Key.animeStatusCompleted]: "Completed",
-
-	// 短文页面
-	[Key.diarySubtitle]: "Share life anytime, anywhere",
-	[Key.diaryCount]: "moments",
-	[Key.diaryImage]: "Image",
-	[Key.diaryReply]: "Reply",
-	[Key.diaryTips]: "Only showing the latest 30 moments",
-	[Key.diaryMinutesAgo]: "minutes ago",
-	[Key.diaryHoursAgo]: "hours ago",
-	[Key.diaryDaysAgo]: "days ago",
 
 	// 404页面
 	[Key.notFound]: "404",
@@ -72,27 +61,6 @@ export const en: Translation = {
 
 	// Music Player
 	[Key.playlist]: "Playlist",
-
-	// Gallery
-	[Key.gallery]: "Gallery",
-	[Key.gallerySubtitle]: "Capture and share beautiful moments",
-	[Key.galleryGroups]: "Gallery Groups",
-	[Key.galleryCreateGroup]: "Create Group",
-	[Key.galleryGroupName]: "Group Name",
-	[Key.galleryGroupDescription]: "Group Description",
-	[Key.galleryGroupCover]: "Cover Image",
-	[Key.galleryUploadImages]: "Upload Images",
-	[Key.galleryImageCount]: "image",
-	[Key.galleryImagesCount]: "images",
-	[Key.galleryViewAll]: "View All",
-	[Key.galleryEdit]: "Edit",
-	[Key.galleryDelete]: "Delete",
-	[Key.gallerySort]: "Sort",
-	[Key.galleryComments]: "Comments",
-	[Key.galleryAddComment]: "Add Comment",
-	[Key.galleryNoGroups]: "No gallery groups yet",
-	[Key.galleryNoImages]: "No images in this group",
-	[Key.galleryCreateFirst]: "Create your first gallery group",
 
 	// Projects page
 	[Key.projects]: "Projects",

@@ -37,7 +37,6 @@ export const vi: Translation = {
 	[Key.license]: "Giấy phép bản quyền",
 	[Key.friends]: "Bạn bè",
 	[Key.anime]: "Anime",
-	[Key.diary]: "Khoảnh khắc",
 
 	// Thống kê anime
 	[Key.animeTotal]: "Tổng số",
@@ -45,16 +44,6 @@ export const vi: Translation = {
 	[Key.animeCompleted]: "Đã hoàn thành",
 	[Key.animeStatusWatching]: "Đang xem",
 	[Key.animeStatusCompleted]: "Đã hoàn thành",
-
-	// Trang nhật ký
-	[Key.diarySubtitle]: "Chia sẻ cuộc sống mọi lúc, mọi nơi",
-	[Key.diaryCount]: "bài viết",
-	[Key.diaryImage]: "Hình ảnh",
-	[Key.diaryReply]: "Trả lời",
-	[Key.diaryTips]: "Chỉ hiển thị 30 khoảnh khắc gần nhất",
-	[Key.diaryMinutesAgo]: "phút trước",
-	[Key.diaryHoursAgo]: "giờ trước",
-	[Key.diaryDaysAgo]: "ngày trước",
 
 	// Trang 404
 	[Key.notFound]: "404",

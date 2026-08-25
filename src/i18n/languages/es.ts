@@ -37,7 +37,6 @@ export const es: Translation = {
 	[Key.license]: "Licencia",
 	[Key.friends]: "Amigos",
 	[Key.anime]: "Anime",
-	[Key.diary]: "Momentos",
 
 	// Estadísticas de anime
 	[Key.animeTotal]: "Total",
@@ -45,16 +44,6 @@ export const es: Translation = {
 	[Key.animeCompleted]: "Completado",
 	[Key.animeStatusWatching]: "Viendo",
 	[Key.animeStatusCompleted]: "Completado",
-
-	// Página de momentos
-	[Key.diarySubtitle]: "Comparte la vida en cualquier momento y lugar",
-	[Key.diaryCount]: "momentos",
-	[Key.diaryImage]: "Imagen",
-	[Key.diaryReply]: "Responder",
-	[Key.diaryTips]: "Solo se muestran los últimos 30 momentos",
-	[Key.diaryMinutesAgo]: "minutos atrás",
-	[Key.diaryHoursAgo]: "horas atrás",
-	[Key.diaryDaysAgo]: "días atrás",
 
 	// Página 404
 	[Key.notFound]: "404",

@@ -1,0 +1,75 @@
+---
+import { Icon } from "astro-icon/components";
+import { skillGroups } from "../data/portfolio";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+
+const skillCount = skillGroups.reduce((total, group) => total + group.skills.length, 0);
+---
+
+<MainGridLayout title="技能展示" description="Cqhasy 的技术方向、工具与工程实践">
+	<section class="card-base overflow-hidden onload-animation">
+		<div class="skills-hero p-6 md:p-9">
+			<p class="text-sm font-bold uppercase tracking-[0.22em] text-[var(--primary)] mb-3">Skills & Focus</p>
+			<h1 class="text-3xl md:text-4xl font-bold text-90 mb-4">技术能力不是进度条，而是解决问题的工具箱</h1>
+			<p class="text-base md:text-lg text-75 leading-8 max-w-3xl">
+				当前以 Go 后端和 AI Agent 为主线，同时保持对前端体验、数据服务、工程效率与可观测性的持续实践。以下内容均来自公开项目中的实际使用场景。
+			</p>
+		</div>
+		<div class="grid grid-cols-2 md:grid-cols-4 border-t border-[var(--line-divider)]">
+			<div class="stat"><strong>{skillGroups.length}</strong><span>能力方向</span></div>
+			<div class="stat border-l border-[var(--line-divider)]"><strong>{skillCount}</strong><span>技能主题</span></div>
+			<div class="stat border-l border-[var(--line-divider)]"><strong>Go</strong><span>主力语言</span></div>
+			<div class="stat border-l border-[var(--line-divider)]"><strong>AI</strong><span>当前重点</span></div>
+		</div>
+	</section>
+
+	<section class="space-y-5 mt-5">
+		{skillGroups.map((group, groupIndex) => (
+			<article class="skill-group card-base p-5 md:p-7 onload-animation" style={`--accent: ${group.accent}; animation-delay: calc(var(--content-delay) + ${80 + groupIndex * 50}ms)`}>
+				<div class="flex flex-col md:flex-row md:items-start gap-5 md:gap-7">
+					<div class="md:w-[32%] shrink-0">
+						<div class="group-icon mb-4"><Icon name={group.icon} class="text-3xl" /></div>
+						<h2 class="text-xl md:text-2xl font-bold text-90 mb-2">{group.title}</h2>
+						<p class="text-sm leading-6 text-75">{group.description}</p>
+					</div>
+					<div class="grid flex-1 grid-cols-1 sm:grid-cols-2 gap-3">
+						{group.skills.map((skill) => (
+							<div class="skill-item rounded-xl border border-[var(--line-divider)] p-4">
+								<div class="flex items-center justify-between gap-3 mb-2">
+									<h3 class="font-bold text-90">{skill.name}</h3>
+									<span class="level">{skill.level}</span>
+								</div>
+								<p class="text-sm leading-6 text-50">{skill.detail}</p>
+							</div>
+						))}
+					</div>
+				</div>
+			</article>
+		))}
+	</section>
+
+	<section class="card-base mt-5 p-6 md:p-8 onload-animation">
+		<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+			<div>
+				<h2 class="text-xl md:text-2xl font-bold text-90 mb-2">学习方式：以项目验证理解</h2>
+				<p class="text-75 leading-7 max-w-2xl">从协议、框架到工程实践，我倾向于先构建一个可以运行的最小项目，再通过真实问题补齐架构、测试和交付能力。</p>
+			</div>
+			<a href="https://github.com/cqhasy" target="_blank" rel="noopener noreferrer" class="btn-regular shrink-0 rounded-xl px-5 py-2.5 font-medium active:scale-95">
+				<Icon name="fa6-brands:github" class="mr-2 text-lg" />查看实践代码
+			</a>
+		</div>
+	</section>
+</MainGridLayout>
+
+<style>
+	.skills-hero { background: radial-gradient(circle at 92% 12%, color-mix(in srgb, var(--primary) 20%, transparent), transparent 36%); }
+	.stat { display: flex; min-height: 5rem; flex-direction: column; align-items: center; justify-content: center; padding: .8rem .4rem; }
+	.stat strong { font-size: 1.35rem; color: var(--primary); }
+	.stat span { margin-top: .2rem; font-size: .75rem; color: var(--text-50); }
+	.skill-group { position: relative; overflow: hidden; }
+	.skill-group::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--accent); }
+	.group-icon { display: flex; align-items: center; justify-content: center; width: 3.25rem; height: 3.25rem; border-radius: 1rem; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+	.skill-item { transition: transform .2s ease, border-color .2s ease, background-color .2s ease; }
+	.skill-item:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 40%, transparent); background: color-mix(in srgb, var(--accent) 4%, transparent); }
+	.level { border-radius: 999px; background: color-mix(in srgb, var(--accent) 11%, transparent); color: var(--accent); padding: .18rem .5rem; font-size: .68rem; font-weight: 700; white-space: nowrap; }
+</style>

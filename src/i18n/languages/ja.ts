@@ -43,7 +43,6 @@ export const ja: Translation = {
 	[Key.license]: "ライセンス",
 	[Key.friends]: "友達",
 	[Key.anime]: "アニメ",
-	[Key.diary]: "つぶやき",
 
 	// 追番统计
 	[Key.animeTotal]: "合計",
@@ -51,16 +50,6 @@ export const ja: Translation = {
 	[Key.animeCompleted]: "視聴済み",
 	[Key.animeStatusWatching]: "視聴中",
 	[Key.animeStatusCompleted]: "視聴済み",
-
-	// 短文页面
-	[Key.diarySubtitle]: "いつでもどこでも、生活をシェア",
-	[Key.diaryCount]: "件のつぶやき",
-	[Key.diaryImage]: "画像",
-	[Key.diaryReply]: "返信",
-	[Key.diaryTips]: "最新30件のつぶやきのみ表示",
-	[Key.diaryMinutesAgo]: "分前",
-	[Key.diaryHoursAgo]: "時間前",
-	[Key.diaryDaysAgo]: "日前",
 
 	// 404ページ
 	[Key.notFound]: "404",

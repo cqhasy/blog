@@ -41,7 +41,6 @@ enum I18nKey {
 	license = "license",
 	friends = "friends",
 	anime = "anime",
-	diary = "diary",
 
 	// 追番统计
 	animeTotal = "animeTotal",
@@ -49,16 +48,6 @@ enum I18nKey {
 	animeCompleted = "animeCompleted",
 	animeStatusWatching = "animeStatusWatching",
 	animeStatusCompleted = "animeStatusCompleted",
-
-	// 短文页面
-	diarySubtitle = "diarySubtitle",
-	diaryCount = "diaryCount",
-	diaryImage = "diaryImage",
-	diaryReply = "diaryReply",
-	diaryTips = "diaryTips",
-	diaryMinutesAgo = "diaryMinutesAgo",
-	diaryHoursAgo = "diaryHoursAgo",
-	diaryDaysAgo = "diaryDaysAgo",
 
 	// 404页面
 	notFound = "notFound",
@@ -68,27 +57,6 @@ enum I18nKey {
 
 	// 音乐播放器
 	playlist = "playlist",
-
-	// Gallery
-	gallery = "gallery",
-	gallerySubtitle = "gallerySubtitle",
-	galleryGroups = "galleryGroups",
-	galleryCreateGroup = "galleryCreateGroup",
-	galleryGroupName = "galleryGroupName",
-	galleryGroupDescription = "galleryGroupDescription",
-	galleryGroupCover = "galleryGroupCover",
-	galleryUploadImages = "galleryUploadImages",
-	galleryImageCount = "galleryImageCount",
-	galleryImagesCount = "galleryImagesCount",
-	galleryViewAll = "galleryViewAll",
-	galleryEdit = "galleryEdit",
-	galleryDelete = "galleryDelete",
-	gallerySort = "gallerySort",
-	galleryComments = "galleryComments",
-	galleryAddComment = "galleryAddComment",
-	galleryNoGroups = "galleryNoGroups",
-	galleryNoImages = "galleryNoImages",
-	galleryCreateFirst = "galleryCreateFirst",
 
 	// 项目展示页面
 	projects = "projects",
