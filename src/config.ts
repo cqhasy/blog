@@ -2,7 +2,6 @@ import type {
 	AnnouncementConfig,
 	CommentConfig,
 	ExpressiveCodeConfig,
-	FooterConfig,
 	LicenseConfig,
 	MusicPlayerConfig,
 	NavBarConfig,
@@ -92,7 +91,7 @@ export const siteConfig: SiteConfig = {
 		credit: {
 			enable: false, // 显示横幅图片来源文本
 
-			text: "Describe", // 要显示的来源文本
+			text: "", // 要显示的来源文本
 			url: "", // （可选）原始艺术品或艺术家页面的 URL 链接
 		},
 
@@ -146,37 +145,15 @@ export const navBarConfig: NavBarConfig = {
 		},
 		{
 			name: "我的",
-			url: "/content/",
+			url: "#",
 			icon: "material-symbols:person",
 			children: [LinkPreset.Anime, LinkPreset.Diary, LinkPreset.Gallery],
 		},
 		{
 			name: "关于",
-			url: "/content/",
+			url: "#",
 			icon: "material-symbols:info",
 			children: [LinkPreset.About, LinkPreset.Friends],
-		},
-		{
-			name: "其他",
-			url: "#",
-			icon: "material-symbols:more-horiz",
-			children: [
-				{
-					name: "项目展示",
-					url: "/projects/",
-					icon: "material-symbols:work",
-				},
-				{
-					name: "技能展示",
-					url: "/skills/",
-					icon: "material-symbols:psychology",
-				},
-				{
-					name: "时间线",
-					url: "/timeline/",
-					icon: "material-symbols:timeline",
-				},
-			],
 		},
 	],
 };
@@ -187,19 +164,19 @@ export const profileConfig: ProfileConfig = {
 	bio: "欢迎访问我的博客！",
 	links: [
 		{
-			name: "Bilibli",
+			name: "Bilibili",
 			icon: "fa6-brands:bilibili",
 			url: "https://space.bilibili.com/3546745302682312/bangumi",
 		},
 		{
 			name: "Gitee",
 			icon: "mdi:git",
-			url: "https://gitee.com/matsuzakayuki",
+			url: "https://gitee.com/cqhasy",
 		},
 		{
 			name: "GitHub",
 			icon: "fa6-brands:github",
-			url: "https://gitee.com/cqhasy",
+			url: "https://github.com/cqhasy",
 		},
 	],
 	// Umami统计部份，记得在layout插入Umami的head标签
@@ -245,11 +222,6 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	enable: true, // 启用音乐播放器功能
 };
 
-export const footerConfig: FooterConfig = {
-	enable: false, // 是否启用Footer HTML注入功能
-};
-
-// 直接编辑 FooterConfig.html 文件来添加备案号等自定义内容
 
 /**
  * 侧边栏布局配置
@@ -281,7 +253,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：公告组件
 			type: "announcement",
-			// 是否启用该组件（现在通过统一配置控制）
+			// 是否启用该组件
 			enable: true,
 			// 组件显示顺序
 			order: 2,
