@@ -147,9 +147,9 @@ const hasAnyComponents = hasTopComponents || hasStickyComponents;
 	</div>
 )}
 
-<!-- 当没有启用的组件时显示占位符 -->
+<!-- 当没有启用的组件时显示提示 -->
 {!hasAnyComponents && (
-	<div class="sidebar-placeholder text-center text-gray-500 dark:text-gray-400 p-4">
+	<div class="sidebar-empty text-center text-gray-500 dark:text-gray-400 p-4">
 		<p>No widgets enabled</p>
 		<p class="text-sm">Configure widgets in your config file</p>
 	</div>
@@ -206,8 +206,8 @@ const hasAnyComponents = hasTopComponents || hasStickyComponents;
 		}
 	}
 	
-	/* 占位符样式 */
-	.sidebar-placeholder {
+	/* 空状态样式 */
+	.sidebar-empty {
 		border: 2px dashed currentColor;
 		border-radius: 0.5rem;
 		opacity: 0.5;
