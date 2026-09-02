@@ -1,0 +1,3 @@
+adapter: github_pages
+posts_directory: _posts
+resources_directory: assets/easyblog
