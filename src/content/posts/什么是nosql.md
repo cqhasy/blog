@@ -33,6 +33,8 @@ NoSQL 数据库（意即“不仅仅是 SQL”）（Not Only SQL）存储数据�
 
 ### 体系结构：
 
+https://i-blog.csdnimg.cn/blog_migrate/f8e0b28e2a41fef2c139e7165286658b.png
+
 ![img](https://i-blog.csdnimg.cn/blog_migrate/f8e0b28e2a41fef2c139e7165286658b.png)
 
 
