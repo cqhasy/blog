@@ -15,7 +15,7 @@ export const portfolioProjects: PortfolioProject[] = [
 	{
 		name: "AI PR Review",
 		description:
-			"面向真实代码仓库的 AI Pull Request 审查工具，不只读取 Diff，还会结合完整仓库上下文、依赖关系与团队规则进行多维度分析。",
+			"结合仓库上下文与团队规则的 AI 代码审查工具，支持 PR 行级评论与 CI 集成。",
 		highlights: [
 			"覆盖安全、逻辑、性能、测试、质量与架构等审查维度",
 			"支持自定义规则、SARIF、PR 行级评论与 CI/CD 集成",
@@ -30,7 +30,7 @@ export const portfolioProjects: PortfolioProject[] = [
 	{
 		name: "Smart Pet",
 		description:
-			"以大模型为能力内核的智能桌宠实验项目，探索桌面交互、Agent 能力与本地应用之间的结合。",
+			"用 Go 与 Wails 构建智能桌宠，探索本地应用与 Agent 的结合。",
 		highlights: [
 			"使用 Wails 构建跨平台桌面应用",
 			"后端采用 Go，并按业务层次组织模块",
@@ -45,7 +45,7 @@ export const portfolioProjects: PortfolioProject[] = [
 	{
 		name: "A2A Agent Demo",
 		description:
-			"围绕 Agent2Agent 协议构建的 Go 学习项目，包含天气 Agent Server 与终端交互 Client。",
+			"Agent2Agent 协议实践，包含天气 Agent 服务与终端客户端。",
 		highlights: [
 			"基于 a2a-go 实现 Agent 间通信",
 			"使用 CloudWeGo Eino 编排 Agent 工作流",
@@ -60,7 +60,7 @@ export const portfolioProjects: PortfolioProject[] = [
 	{
 		name: "Agent Pilot",
 		description:
-			"基于即时通讯场景的飞书智能协同助手，探索 AI Agent 在团队沟通与任务协作中的落地方式。",
+			"飞书智能协同助手，探索 Agent 在团队沟通与任务协作中的应用。",
 		highlights: ["面向飞书 IM 协作场景", "使用 Go 构建轻量后端", "聚焦 Agent 驱动的协作体验"],
 		tech: ["Go", "Feishu", "AI Agent", "IM Bot"],
 		status: "开发中",
@@ -80,7 +80,7 @@ export const portfolioProjects: PortfolioProject[] = [
 	{
 		name: "昊の月",
 		description:
-			"当前正在访问的个人博客，用于沉淀 Go、AI Agent、性能分析、可观测性与工程实践相关内容。",
+			"用 Astro 构建的个人博客，记录技术实践与生活随笔。",
 		highlights: ["Astro 静态站点", "响应式布局与深浅色主题", "Markdown 内容管理与全文搜索"],
 		tech: ["Astro", "TypeScript", "Tailwind CSS", "Pagefind"],
 		status: "持续迭代",

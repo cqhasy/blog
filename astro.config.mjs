@@ -3,7 +3,6 @@ import svelte from "@astrojs/svelte";
 import tailwind from "@astrojs/tailwind";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
-import swup from "@swup/astro";
 import { defineConfig } from "astro/config";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
@@ -17,11 +16,11 @@ import remarkMath from "remark-math";
 import remarkSectionize from "remark-sectionize";
 import { expressiveCodeConfig } from "./src/config.ts";
 import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-copy-button.js";
-import { pluginLanguageBadge } from "./src/plugins/expressive-code/language-badge.ts";
 import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
 import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs";
 import { rehypeMermaid } from "./src/plugins/rehype-mermaid.mjs";
 import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
+import { remarkArticleHeadings } from "./src/plugins/remark-article-headings.js";
 import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
 import { remarkMermaid } from "./src/plugins/remark-mermaid.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
@@ -35,27 +34,6 @@ export default defineConfig({
 		tailwind({
 			nesting: true,
 		}),
-		swup({
-			theme: false,
-			animationClass: "transition-swup-", // see https://swup.js.org/options/#animationselector
-			// the default value `transition-` cause transition delay
-			// when the Tailwind class `transition-all` is used
-			containers: ["main"],
-			smoothScrolling: false, // 禁用平滑滚动以提升性能，避免与锚点导航冲突
-			cache: true,
-			preload: false, // 禁用预加载以减少网络请求
-			accessibility: true,
-			updateHead: true,
-			updateBodyClass: false,
-			globalInstance: true,
-			// 滚动相关配置优化
-			resolveUrl: (url) => url,
-			animateHistoryBrowsing: false,
-			skipPopStateHandling: (event) => {
-				// 跳过锚点链接的处理，让浏览器原生处理
-				return event.state && event.state.url && event.state.url.includes("#");
-			},
-		}),
 		icon({
 			include: {
 				"preprocess: vitePreprocess(),": ["*"],
@@ -66,11 +44,12 @@ export default defineConfig({
 			},
 		}),
 		expressiveCode({
-			themes: [expressiveCodeConfig.theme, expressiveCodeConfig.theme],
+			themes: [expressiveCodeConfig.lightTheme, expressiveCodeConfig.theme],
+			useDarkModeMediaQuery: false,
+			themeCssSelector: (theme) => theme.type === "dark" ? ".dark" : ":root:not(.dark)",
 			plugins: [
 				pluginCollapsibleSections(),
 				pluginLineNumbers(),
-				pluginLanguageBadge(),
 				pluginCustomCopyButton(),
 			],
 			defaultProps: {
@@ -82,22 +61,24 @@ export default defineConfig({
 				},
 			},
 			styleOverrides: {
-				codeBackground: "var(--codeblock-bg)",
-				borderRadius: "0.75rem",
-				borderColor: "none",
+				codeBackground: ({ theme }) => theme.type === "dark" ? "#18181b" : "#f5f5f5",
+				borderRadius: "0.5rem",
+				borderColor: "var(--rule)",
+				gutterBorderColor: "var(--rule)",
+				codePaddingBlock: "1.25rem",
 				codeFontSize: "0.875rem",
 				codeFontFamily:
 					"'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
 				codeLineHeight: "1.5rem",
 				frames: {
-					editorBackground: "var(--codeblock-bg)",
-					terminalBackground: "var(--codeblock-bg)",
-					terminalTitlebarBackground: "var(--codeblock-topbar-bg)",
-					editorTabBarBackground: "var(--codeblock-topbar-bg)",
+					editorBackground: "var(--code-surface)",
+					terminalBackground: "var(--code-surface)",
+					terminalTitlebarBackground: "var(--code-surface)",
+					editorTabBarBackground: "var(--code-surface)",
 					editorActiveTabBackground: "none",
 					editorActiveTabIndicatorBottomColor: "var(--primary)",
 					editorActiveTabIndicatorTopColor: "none",
-					editorTabBarBorderBottomColor: "var(--codeblock-topbar-bg)",
+					editorTabBarBorderBottomColor: "var(--code-surface)",
 					terminalTitlebarBorderBottomColor: "none",
 				},
 				textMarkers: {
@@ -115,6 +96,7 @@ export default defineConfig({
 	],
 	markdown: {
 		remarkPlugins: [
+			remarkArticleHeadings,
 			remarkMath,
 			remarkReadingTime,
 			remarkExcerpt,

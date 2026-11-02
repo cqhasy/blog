@@ -1,15 +1,16 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import type { WritingEntry } from "@utils/content-utils";
+import { getPostUrlBySlug } from "@utils/url-utils";
 import { commentConfig } from "@/config";
 import Twikoo from "./Twikoo.astro";
 
 interface Props {
-	post: CollectionEntry<"posts">;
+	post: WritingEntry;
 }
 
 const { id, data, slug } = Astro.props.post;
 
-const path = `/posts/${slug}`;
+const path = getPostUrlBySlug(slug, Astro.props.post.collection);
 const url = `${Astro.site?.href}${path}`;
 
 let commentService = "";

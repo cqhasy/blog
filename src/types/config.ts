@@ -154,6 +154,7 @@ export type BlogPostData = {
 
 export type ExpressiveCodeConfig = {
 	theme: string;
+	lightTheme: string;
 };
 
 export type AnnouncementConfig = {

@@ -1,0 +1,9 @@
+---
+import Article from "../../components/Article.astro";
+import { getSortedPosts } from "../../utils/content-utils";
+export async function getStaticPaths() {
+	return (await getSortedPosts("shares")).map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+---
+<Article entry={entry} />

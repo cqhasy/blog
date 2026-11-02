@@ -1,14 +1,31 @@
 ---
-import ArchivePanel from "@components/ArchivePanel.svelte";
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
-import MainGridLayout from "@layouts/MainGridLayout.astro";
-import { getSortedPostsList } from "../utils/content-utils";
-
-const sortedPostsList = await getSortedPostsList();
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+import { getSortedPosts } from "../utils/content-utils";
+import { getPostUrlBySlug } from "../utils/url-utils";
+const entries = (await getSortedPosts()).sort((a, b) => b.data.published.getTime() - a.data.published.getTime());
+const years = [...new Set(entries.map((entry) => entry.data.published.getUTCFullYear()))];
 ---
-
-<MainGridLayout title={i18n(I18nKey.archive)}>
-    <ArchivePanel sortedPosts={sortedPostsList} client:only="svelte"></ArchivePanel>
+<MainGridLayout title="归档" description="按年份回看分享与随笔。">
+	<header class="page-heading"><p class="eyebrow">ARCHIVE / 所有文字</p><h1>归档<span class="accent-dot">。</span></h1><p id="archive-description">按时间回看，写过的每一段文字。</p></header>
+	<p id="archive-filter" class="quiet-empty" hidden></p>
+	{years.map((year) => <section class="year-group archive-year"><h2 class="year-label">{year}</h2>{entries.filter((entry) => entry.data.published.getUTCFullYear() === year).map((entry) => <article class="writing-row archive-row" data-tags={JSON.stringify(entry.data.tags)} data-category={entry.data.category || ""}><time class="writing-date" datetime={entry.data.published.toISOString()}>{entry.data.published.toISOString().slice(0, 10).replaceAll("-", ".")}</time><div class="writing-info"><h3><a href={getPostUrlBySlug(entry.slug, entry.collection)}>{entry.data.title}</a></h3><span class="writing-meta">{entry.collection === "shares" ? "分享" : "随笔"}</span></div><span class="row-arrow" aria-hidden="true">↗</span></article>)}</section>)}
 </MainGridLayout>
-
+<script>
+	const params = new URLSearchParams(location.search);
+	const tags = params.getAll("tag");
+	const category = params.get("category");
+	const uncategorized = params.has("uncategorized");
+	if (tags.length || category || uncategorized) {
+		let count = 0;
+		for (const row of document.querySelectorAll<HTMLElement>(".archive-row")) {
+			const rowTags: string[] = JSON.parse(row.dataset.tags || "[]");
+			const visible = (!tags.length || tags.some((tag) => rowTags.includes(tag))) && (!category || row.dataset.category === category) && (!uncategorized || !row.dataset.category);
+			row.hidden = !visible;
+			if (visible) count++;
+		}
+		for (const group of document.querySelectorAll<HTMLElement>(".archive-year")) group.hidden = !group.querySelector(".archive-row:not([hidden])");
+		const label = document.querySelector<HTMLElement>("#archive-filter")!;
+		label.hidden = false;
+		label.textContent = `${tags.map((tag) => `#${tag}`).join(" ") || category || "未分类"} · ${count} 篇文字`;
+	}
+</script>

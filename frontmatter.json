@@ -5,8 +5,12 @@
   "frontMatter.content.publicFolder": "public",
   "frontMatter.content.pageFolders": [
     {
-      "title": "posts",
-      "path": "[[workspace]]/src/content/posts"
+      "title": "分享",
+      "path": "[[workspace]]/src/content/shares"
+    },
+    {
+      "title": "随笔",
+      "path": "[[workspace]]/src/content/notes"
     }
   ],
   "frontMatter.taxonomy.contentTypes": [

@@ -1,25 +1,28 @@
 ---
+import ReadingIcon from "../components/ReadingIcon.astro";
 import type { GetStaticPaths } from "astro";
 import HomeIntro from "../components/HomeIntro.astro";
+import PostCard from "../components/PostCard.astro";
 import Pagination from "../components/control/Pagination.astro";
-import PostPage from "../components/PostPage.astro";
 import { PAGE_SIZE } from "../constants/constants";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
 import { getSortedPosts } from "../utils/content-utils";
-
+import { url } from "../utils/url-utils";
 export const getStaticPaths = (async ({ paginate }) => {
-	const allBlogPosts = await getSortedPosts();
-	return paginate(allBlogPosts, { pageSize: PAGE_SIZE });
+	return paginate(await getSortedPosts("shares"), { pageSize: PAGE_SIZE });
 }) satisfies GetStaticPaths;
-// https://github.com/withastro/astro/issues/6507#issuecomment-1489916992
-
 const { page } = Astro.props;
-
-const len = page.data.length;
+const notes = (await getSortedPosts("notes")).slice(0, 3);
 ---
-
 <MainGridLayout>
-    {page.currentPage === 1 && <HomeIntro />}
-    <PostPage page={page}></PostPage>
-    <Pagination class="mx-auto onload-animation" page={page} style={`animation-delay: calc(var(--content-delay) + ${(len)*50}ms)`}></Pagination>
+	{page.currentPage === 1 && <HomeIntro />}
+	<section class="writing-section" aria-labelledby="shares-title">
+		<div class="section-heading"><div><h2 id="shares-title">分享 <span class="section-count">{String(page.total).padStart(2, "0")}</span></h2></div><a class="icon-button section-more" href={url("/shares/")} aria-label="浏览全部分享" title="浏览全部分享"><ReadingIcon name="arrow-right" /></a></div>
+		{page.data.map((entry) => <PostCard entry={entry} />)}
+		{page.lastPage > 1 && <Pagination page={page} class="list-pagination" />}
+	</section>
+	{page.currentPage === 1 && <section class="writing-section notes-section" aria-labelledby="notes-title">
+		<div class="section-heading"><div><h2 id="notes-title">随笔</h2></div><a class="icon-button section-more" href={url("/notes/")} aria-label="浏览全部随笔" title="浏览全部随笔"><ReadingIcon name="arrow-right" /></a></div>
+		{notes.length ? notes.map((entry) => <PostCard entry={entry} />) : <p class="quiet-empty">随笔还在酝酿中。</p>}
+	</section>}
 </MainGridLayout>

@@ -14,30 +14,32 @@ const className = Astro.props.class;
 </div>
 
 <script>
-document.addEventListener("click", function (e: MouseEvent) {
-    const target = e.target as Element | null;
-    if (target && target.classList.contains("copy-btn")) {
-        const preEle = target.closest("pre");
-        const codeEle = preEle?.querySelector("code");
-        const code = Array.from(codeEle?.querySelectorAll(".code:not(summary *)") ?? [])
-            .map(el => el.textContent)
-            .map(t => t === "\n" ? "" : t)
-            .join("\n");
-        navigator.clipboard.writeText(code);
-
-        const timeoutId = target.getAttribute("data-timeout-id");
-        if (timeoutId) {
-            clearTimeout(parseInt(timeoutId));
-        }
-
-        target.classList.add("success");
-
-        // 设置新的timeout并保存ID到按钮的自定义属性中
-        const newTimeoutId = setTimeout(() => {
-            target.classList.remove("success");
-        }, 1000);
-
-        target.setAttribute("data-timeout-id", newTimeoutId.toString());
+const copyTimers = new WeakMap<HTMLElement, ReturnType<typeof setTimeout>>();
+document.addEventListener("click", async (event: MouseEvent) => {
+    const target = event.target as Element | null;
+    const button = target?.closest<HTMLElement>(".copy-btn");
+    if (!button) return;
+    const codeElement = button.closest(".frame")?.querySelector("pre code");
+    if (!codeElement) return;
+    const code = Array.from(codeElement.querySelectorAll(".code:not(summary *)"))
+        .map((line) => line.textContent === "\n" ? "" : line.textContent)
+        .join("\n");
+    const feedback = button.querySelector<HTMLElement>(".copy-feedback");
+    clearTimeout(copyTimers.get(button));
+    try {
+        await navigator.clipboard.writeText(code);
+        button.classList.add("success");
+        button.setAttribute("aria-label", "代码已复制");
+        if (feedback) feedback.textContent = "已复制";
+    } catch {
+        button.classList.remove("success");
+        button.setAttribute("aria-label", "复制失败，请手动选择代码");
+        if (feedback) feedback.textContent = "请手动复制";
     }
+    copyTimers.set(button, setTimeout(() => {
+        button.classList.remove("success");
+        button.setAttribute("aria-label", "复制代码");
+        if (feedback) feedback.textContent = "";
+    }, 2000));
 });
 </script>

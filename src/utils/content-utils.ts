@@ -1,13 +1,24 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-import { getCategoryUrl } from "@utils/url-utils.ts";
+import { getCategoryUrl } from "@utils/url-utils";
 
-// // Retrieve posts and sort them by publication date
-async function getRawSortedPosts() {
-	const allBlogPosts = await getCollection("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+export type WritingCollection = "shares" | "notes";
+export type WritingEntry = CollectionEntry<"shares"> | CollectionEntry<"notes">;
+
+async function getRawSortedPosts(
+	collection?: WritingCollection,
+): Promise<WritingEntry[]> {
+	const visible = ({ data }: WritingEntry) =>
+		!import.meta.env.PROD || !data.draft;
+	const allBlogPosts: WritingEntry[] = collection
+		? await getCollection(collection, visible)
+		: (
+				await Promise.all([
+					getCollection("shares", visible),
+					getCollection("notes", visible),
+				])
+			).flat();
 
 	const sorted = allBlogPosts.sort((a, b) => {
 		// 首先按置顶状态排序，置顶文章在前
@@ -17,28 +28,29 @@ async function getRawSortedPosts() {
 		// 如果置顶状态相同，则按发布日期排序
 		const dateA = new Date(a.data.published);
 		const dateB = new Date(b.data.published);
-		return dateA > dateB ? -1 : 1;
+		return dateB.getTime() - dateA.getTime() || a.slug.localeCompare(b.slug);
 	});
 	return sorted;
 }
 
-export async function getSortedPosts() {
-	const sorted = await getRawSortedPosts();
-
-	for (let i = 1; i < sorted.length; i++) {
-		sorted[i].data.nextSlug = sorted[i - 1].slug;
-		sorted[i].data.nextTitle = sorted[i - 1].data.title;
+export async function getSortedPosts(collection?: WritingCollection) {
+	const sorted = await getRawSortedPosts(collection);
+	// Previous/next navigation stays inside the entry's own collection.
+	for (const name of ["shares", "notes"] as const) {
+		const entries = sorted.filter((entry) => entry.collection === name);
+		for (const [index, entry] of entries.entries()) {
+			entry.data.nextSlug = entries[index - 1]?.slug || "";
+			entry.data.nextTitle = entries[index - 1]?.data.title || "";
+			entry.data.prevSlug = entries[index + 1]?.slug || "";
+			entry.data.prevTitle = entries[index + 1]?.data.title || "";
+		}
 	}
-	for (let i = 0; i < sorted.length - 1; i++) {
-		sorted[i].data.prevSlug = sorted[i + 1].slug;
-		sorted[i].data.prevTitle = sorted[i + 1].data.title;
-	}
-
 	return sorted;
 }
 export type PostForList = {
 	slug: string;
-	data: CollectionEntry<"posts">["data"];
+	collection: WritingCollection;
+	data: WritingEntry["data"];
 };
 export async function getSortedPostsList(): Promise<PostForList[]> {
 	const sortedFullPosts = await getRawSortedPosts();
@@ -46,6 +58,7 @@ export async function getSortedPostsList(): Promise<PostForList[]> {
 	// delete post.body
 	const sortedPostsList = sortedFullPosts.map((post) => ({
 		slug: post.slug,
+		collection: post.collection,
 		data: post.data,
 	}));
 
@@ -57,9 +70,7 @@ export type Tag = {
 };
 
 export async function getTagList(): Promise<Tag[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	const allBlogPosts = await getRawSortedPosts();
 
 	const countMap: { [key: string]: number } = {};
 	allBlogPosts.map((post: { data: { tags: string[] } }) => {
@@ -84,9 +95,7 @@ export type Category = {
 };
 
 export async function getCategoryList(): Promise<Category[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	const allBlogPosts = await getRawSortedPosts();
 	const count: { [key: string]: number } = {};
 	allBlogPosts.map((post: { data: { category: string | null } }) => {
 		if (!post.data.category) {

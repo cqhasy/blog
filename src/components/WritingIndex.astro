@@ -1,0 +1,19 @@
+---
+import ReadingIcon from "./ReadingIcon.astro";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+import PostCard from "./PostCard.astro";
+import { getSortedPosts, type WritingCollection } from "../utils/content-utils";
+interface Props { collection: WritingCollection }
+const { collection } = Astro.props;
+const entries = await getSortedPosts(collection);
+const isShares = collection === "shares";
+const title = isShares ? "分享" : "随笔";
+const description = isShares ? "把技术探索、项目实践与踩过的坑，整理成可以回看的经验。" : "记下日常的片刻、读过的书，以及还没想明白的事情。";
+const years = [...new Set(entries.map((entry) => entry.data.published.getUTCFullYear()))].sort((a, b) => b - a);
+---
+<MainGridLayout title={title} description={description}>
+	<header class="page-heading"><p class="eyebrow">{isShares ? "SHARING / 技术与实践" : "ESSAYS / 生活与思考"}</p><h1>{title}</h1><p>{description}</p></header>
+	<div class="collection-nav" aria-label={`${title}文章列表`}><span>{entries.length} 篇文字</span></div>
+	{years.map((year) => <section class="year-group" aria-labelledby={`year-${year}`}><h2 class="year-label" id={`year-${year}`}>{year}</h2>{entries.filter((entry) => entry.data.published.getUTCFullYear() === year).map((entry) => <PostCard entry={entry} />)}</section>)}
+	{!entries.length && <div class="collection-empty"><ReadingIcon class="empty-ornament" name="pen" size={30} /><h2>留一点空白，给接下来的生活。</h2><p>还没有发布{title}，有了新的文字就放在这里。</p></div>}
+</MainGridLayout>

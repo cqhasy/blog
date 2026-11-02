@@ -2,86 +2,58 @@
 import { Icon } from "astro-icon/components";
 import { portfolioProjects } from "../data/portfolio";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
-
-const featuredCount = portfolioProjects.filter((project) => project.featured).length;
-const techCount = new Set(portfolioProjects.flatMap((project) => project.tech)).size;
 ---
 
 <MainGridLayout title="项目展示" description="Cqhasy 的开源项目与实践作品">
-	<section class="card-base overflow-hidden onload-animation">
-		<div class="page-hero p-6 md:p-9">
-			<div class="relative z-10 max-w-3xl">
-				<p class="text-sm font-bold uppercase tracking-[0.22em] text-[var(--primary)] mb-3">Projects</p>
-				<h1 class="text-3xl md:text-4xl font-bold text-90 mb-4">从想法到可以运行的项目</h1>
-				<p class="text-base md:text-lg text-75 leading-8">
-					项目主要围绕 Go 后端、AI Agent、开发者工具与跨平台应用展开。相比堆砌数量，我更关注真实问题、完整链路与持续迭代。
-				</p>
-			</div>
-		</div>
-		<div class="grid grid-cols-3 border-t border-[var(--line-divider)]">
-			<div class="stat"><strong>{portfolioProjects.length}</strong><span>展示项目</span></div>
-			<div class="stat border-x border-[var(--line-divider)]"><strong>{featuredCount}</strong><span>重点项目</span></div>
-			<div class="stat"><strong>{techCount}</strong><span>涉及技术</span></div>
-		</div>
-	</section>
+	<header class="page-heading onload-animation">
+		<p class="eyebrow">Projects</p>
+		<h1>项目</h1>
+		<p>Go、AI Agent 与日常使用的小工具。</p>
+	</header>
 
-	<section class="grid grid-cols-1 gap-5 mt-5 xl:grid-cols-2">
+	<section class="project-list" aria-label="项目列表">
 		{portfolioProjects.map((project, index) => (
-			<article class="project-card card-base p-5 md:p-6 onload-animation" style={`animation-delay: calc(var(--content-delay) + ${80 + index * 45}ms)`}>
-				<div class="flex items-start justify-between gap-4 mb-4">
-					<div class="flex items-center gap-3">
-						<div class="icon-box"><Icon name={project.icon} class="text-2xl" /></div>
-						<div>
-							<div class="flex flex-wrap items-center gap-2">
-								<h2 class="text-xl font-bold text-90">{project.name}</h2>
-								{project.featured && <span class="featured">重点</span>}
-							</div>
-							<span class="text-xs text-[var(--primary)] font-medium">{project.status}</span>
+			<article class="project-row onload-animation" style={`animation-delay: calc(var(--content-delay) + ${index * 40}ms)`}>
+				<div class="project-title">
+					<div class="project-icon" aria-hidden="true"><Icon name={project.icon} /></div>
+					<div>
+						<div class="project-kicker">
+							<span>{project.status}</span>
 						</div>
+						<h2>{project.name}</h2>
 					</div>
-					<a href={project.repo} target="_blank" rel="noopener noreferrer" aria-label={`打开 ${project.name} GitHub 仓库`} class="repo-button">
-						<Icon name="fa6-brands:github" class="text-xl" />
-					</a>
 				</div>
-
-				<p class="text-75 leading-7 mb-4">{project.description}</p>
-				<ul class="space-y-2 mb-5">
-					{project.highlights.map((highlight) => (
-						<li class="flex gap-2 text-sm leading-6 text-75">
-							<Icon name="material-symbols:check-circle-outline" class="mt-1 shrink-0 text-[var(--primary)]" />
-							<span>{highlight}</span>
-						</li>
-					))}
-				</ul>
-				<div class="flex flex-wrap gap-2 mb-5">
-					{project.tech.map((tech) => <span class="tech-tag">{tech}</span>)}
+				<div class="project-content">
+					<p>{project.description}</p>
+					<div class="project-footer">
+						<div class="tech-list" aria-label="使用技术">
+							{project.tech.slice(0, 4).map((tech) => <span>{tech}</span>)}
+						</div>
+						<a class="project-link" href={project.repo} target="_blank" rel="noopener noreferrer">查看仓库 <Icon name="material-symbols:arrow-outward-rounded" /></a>
+					</div>
 				</div>
-				<a href={project.repo} target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-bold text-[var(--primary)] hover:underline">
-					查看源代码 <Icon name="material-symbols:arrow-outward-rounded" class="ml-1" />
-				</a>
 			</article>
 		))}
-	</section>
-
-	<section class="card-base mt-5 p-6 md:p-8 text-center onload-animation">
-		<h2 class="text-2xl font-bold text-90 mb-3">更多探索仍在继续</h2>
-		<p class="text-75 leading-7 max-w-2xl mx-auto mb-5">GitHub 中还记录了数据结构、DDD、用户服务以及团队项目等学习与实践代码。</p>
-		<a href="https://github.com/cqhasy?tab=repositories" target="_blank" rel="noopener noreferrer" class="btn-regular rounded-xl px-5 py-2.5 font-medium active:scale-95">
-			<Icon name="fa6-brands:github" class="mr-2 text-lg" />浏览全部 GitHub 仓库
-		</a>
 	</section>
 </MainGridLayout>
 
 <style>
-	.page-hero { background: radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 35%); }
-	.stat { display: flex; flex-direction: column; align-items: center; padding: 1rem .5rem; }
-	.stat strong { font-size: 1.5rem; color: var(--primary); }
-	.stat span { font-size: .78rem; color: var(--text-50); margin-top: .15rem; }
-	.project-card { transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
-	.project-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--primary) 35%, transparent); box-shadow: 0 16px 40px rgba(0,0,0,.08); }
-	.icon-box, .repo-button { display: flex; align-items: center; justify-content: center; width: 2.75rem; height: 2.75rem; border-radius: .85rem; background: var(--btn-regular-bg); color: var(--primary); flex-shrink: 0; }
-	.repo-button { color: var(--text-75); transition: color .2s ease, transform .2s ease; }
-	.repo-button:hover { color: var(--primary); transform: scale(1.06); }
-	.featured { border-radius: 999px; background: color-mix(in srgb, var(--primary) 14%, transparent); color: var(--primary); padding: .15rem .5rem; font-size: .7rem; font-weight: 700; }
-	.tech-tag { border-radius: .55rem; background: var(--btn-regular-bg); color: var(--text-75); padding: .3rem .6rem; font-size: .75rem; }
+	.page-heading { padding-bottom: 28px; }
+	.project-list { display: grid; gap: 16px; }
+	.project-row { display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr); gap: 32px; padding: 26px; border: 1px solid var(--rule); border-radius: 8px; }
+	.project-title { display: flex; align-items: flex-start; gap: 14px; }
+	.project-icon { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 34px; width: 34px; height: 34px; border: 1px solid var(--rule); border-radius: 7px; color: var(--muted); }
+	.project-kicker { display: flex; flex-wrap: wrap; gap: 8px; color: var(--faint); font-size: 11px; line-height: 1.5; }
+	.project-kicker span + span::before { content: '·'; margin-right: 8px; }
+	.project-title h2 { margin: 3px 0 0; font-size: 18px; line-height: 1.5; font-weight: 600; }
+	.project-content p { margin: 0 0 18px; color: var(--muted); font-size: 14px; line-height: 1.85; }
+	.project-footer { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+	.tech-list { display: flex; flex-wrap: wrap; gap: 8px; color: var(--faint); font: 11px/1.5 'JetBrains Mono Variable', monospace; }
+	.tech-list span + span::before { content: ' / '; color: var(--rule); }
+	.project-link { display: inline-flex; align-items: center; flex-shrink: 0; gap: 6px; color: var(--ink); font-size: 12px; text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 4px; }
+	.project-link:hover { color: var(--accent); }
+	@media (max-width: 640px) {
+		.project-row { grid-template-columns: 1fr; gap: 18px; padding: 22px; }
+		.project-footer { align-items: flex-start; flex-direction: column; gap: 14px; }
+	}
 </style>

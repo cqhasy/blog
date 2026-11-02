@@ -1,59 +1,51 @@
-/* This is a script to create a new post markdown file with front-matter */
+import fs from "node:fs";
+import path from "node:path";
 
-import fs from "fs"
-import path from "path"
-
-function getDate() {
-  const today = new Date()
-  const year = today.getFullYear()
-  const month = String(today.getMonth() + 1).padStart(2, "0")
-  const day = String(today.getDate()).padStart(2, "0")
-
-  return `${year}-${month}-${day}`
+const args = process.argv.slice(2).filter((arg) => arg !== "--");
+const help = `用法：
+  pnpm new-post <文件名>                 # 新建分享
+  pnpm new-post shares <文件名>          # 新建分享
+  pnpm new-post notes <文件名>           # 新建随笔
+  pnpm new-note <文件名>                 # 新建随笔`;
+if (!args.length || args.includes("--help")) {
+	console.log(help);
+	process.exit(args.length ? 0 : 1);
 }
-
-const args = process.argv.slice(2)
-
-if (args.length === 0) {
-  console.error(`Error: No filename argument provided
-Usage: npm run new-post -- <filename>`)
-  process.exit(1) // Terminate the script and return error code 1
+const explicitCollection = ["shares", "notes"].includes(args[0]);
+const collection = explicitCollection ? args.shift() : "shares";
+if (!args.length) {
+	console.error(help);
+	process.exit(1);
 }
-
-let fileName = args[0]
-
-// Add .md extension if not present
-const fileExtensionRegex = /\.(md|mdx)$/i
-if (!fileExtensionRegex.test(fileName)) {
-  fileName += ".md"
+const title = args.join(" ");
+const fileName = /\.md$/i.test(title) ? title : `${title}.md`;
+const targetDir = path.resolve("src/content", collection);
+const fullPath = path.resolve(targetDir, fileName);
+if (!fullPath.startsWith(`${targetDir}${path.sep}`)) {
+	console.error("文件名必须位于所选栏目目录内。");
+	process.exit(1);
 }
-
-const targetDir = "./src/content/posts/"
-const fullPath = path.join(targetDir, fileName)
-
 if (fs.existsSync(fullPath)) {
-  console.error(`Error: File ${fullPath} already exists `)
-  process.exit(1)
+	console.error(`文件已存在：${fullPath}`);
+	process.exit(1);
 }
-
-// recursive mode creates multi-level directories
-const dirPath = path.dirname(fullPath)
-if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true })
-}
-
+fs.mkdirSync(path.dirname(fullPath), { recursive: true });
+const published = new Intl.DateTimeFormat("en-CA", {
+	timeZone: "Asia/Shanghai",
+	year: "numeric",
+	month: "2-digit",
+	day: "2-digit",
+}).format(new Date());
 const content = `---
-title: ${args[0]}
-published: ${getDate()}
+title: ${JSON.stringify(title.replace(/\.md$/i, ""))}
+published: ${published}
 description: ''
-image: ''
 tags: []
-category: ''
-draft: false 
-lang: ''
+draft: true
 ---
-`
 
-fs.writeFileSync(path.join(targetDir, fileName), content)
-
-console.log(`Post ${fullPath} created`)
+`;
+fs.writeFileSync(fullPath, content, { flag: "wx" });
+console.log(
+	`已创建${collection === "shares" ? "分享" : "随笔"}草稿：${fullPath}`,
+);

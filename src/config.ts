@@ -40,7 +40,7 @@ export const siteConfig: SiteConfig = {
 		ignoreTags: ["script", "style", "code", "pre"], // 翻译时忽略的 HTML 标签
 	},
 	banner: {
-		enable: true, // 暂时禁用横幅以提高加载速度
+		enable: false, // 阅读优先，关闭横幅
 
 		// 支持单张图片或图片数组，当数组长度 > 1 时自动启用轮播
 		src: {
@@ -118,57 +118,9 @@ export const siteConfig: SiteConfig = {
 export const navBarConfig: NavBarConfig = {
 	links: [
 		LinkPreset.Home,
-		LinkPreset.Archive,
-		// 支持自定义导航栏链接,并且支持多级菜单,3.1版本新加
-		{
-			name: "链接",
-			url: "/links/",
-			icon: "material-symbols:link",
-			children: [
-				{
-					name: "GitHub",
-					url: GITHUB_PROFILE_URL,
-					external: true,
-					icon: "fa6-brands:github",
-				},
-				{
-					name: "Bilibili",
-					url: "https://space.bilibili.com/3546745302682312/bangumi",
-					external: true,
-					icon: "fa6-brands:bilibili",
-				},
-				{
-					name: "Gitee",
-					url: GITEE_PROFILE_URL,
-					external: true,
-					icon: "mdi:git",
-				},
-			],
-		},
-		{
-			name: "作品",
-			url: "#",
-			icon: "material-symbols:rocket-launch-outline",
-			children: [
-				{
-					name: "项目展示",
-					url: "/projects/",
-					icon: "material-symbols:deployed-code-outline",
-				},
-				{
-					name: "技能展示",
-					url: "/skills/",
-					icon: "material-symbols:code-blocks-outline",
-				},
-				LinkPreset.Anime,
-			],
-		},
-		{
-			name: "关于",
-			url: "#",
-			icon: "material-symbols:info",
-			children: [LinkPreset.About, LinkPreset.Friends],
-		},
+		{ name: "分享", url: "/shares/" },
+		{ name: "随笔", url: "/notes/" },
+		{ name: "关于", url: "/about/" },
 	],
 };
 
@@ -208,9 +160,9 @@ export const licenseConfig: LicenseConfig = {
 };
 
 export const expressiveCodeConfig: ExpressiveCodeConfig = {
-	// 注意：某些样式（如背景颜色）已被覆盖，请参阅 astro.config.mjs 文件。
-	// 请选择深色主题，因为此博客主题目前仅支持深色背景
+	// 与页面主题同步，浅色与深色分别生成语法高亮。
 	theme: "github-dark",
+	lightTheme: "github-light",
 };
 
 export const commentConfig: CommentConfig = {
@@ -233,7 +185,7 @@ export const announcementConfig: AnnouncementConfig = {
 };
 
 export const musicPlayerConfig: MusicPlayerConfig = {
-	enable: true, // 启用音乐播放器功能
+	enable: false, // 阅读时保持安静
 };
 
 
@@ -242,8 +194,8 @@ export const musicPlayerConfig: MusicPlayerConfig = {
  * 用于控制侧边栏组件的显示、排序、动画和响应式行为
  */
 export const sidebarLayoutConfig: SidebarLayoutConfig = {
-	// 是否启用侧边栏功能
-	enable: true,
+	// 阅读布局不使用侧边栏
+	enable: false,
 
 	// 侧边栏位置：左侧或右侧
 	position: "left",
@@ -353,7 +305,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 };
 
 export const sakuraConfig: SakuraConfig = {
-	enable: true, // 默认关闭樱花特效
+	enable: false, // 阅读时关闭装饰动画
 	sakuraNum: 21, // 樱花数量
 	limitTimes: -1, // 樱花越界限制次数，-1为无限循环
 	size: {
