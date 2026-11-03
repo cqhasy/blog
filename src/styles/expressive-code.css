@@ -28,6 +28,12 @@
   text-transform: uppercase;
   letter-spacing: .06em;
 }
+.custom-md .expressive-code .code-copy-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
 .custom-md .expressive-code .copy-btn {
   all: unset;
   position: relative;
@@ -37,18 +43,21 @@
   flex: 0 0 44px;
   width: 44px;
   height: 44px;
-  border-radius: 4px;
+  border-radius: 10px;
   color: var(--muted);
   cursor: pointer;
   opacity: 1;
-  transition: color 160ms ease, background-color 160ms ease;
+  transition: color 150ms ease, background-color 150ms ease, transform 150ms ease;
 }
 .custom-md .expressive-code .copy-btn:hover {
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--ink);
+  background: var(--btn-plain-bg-hover);
+}
+.custom-md .expressive-code .copy-btn:active {
+  transform: scale(.94);
 }
 .custom-md .expressive-code .copy-btn:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--field-focus);
   outline-offset: -3px;
 }
 .custom-md .expressive-code .copy-btn svg {
@@ -56,19 +65,34 @@
   width: 17px;
   height: 17px;
   fill: none;
+  transition: opacity 150ms ease, transform 150ms ease;
 }
 .custom-md .expressive-code .copy-btn .success-icon,
 .custom-md .expressive-code .copy-btn.success .copy-icon {
   opacity: 0;
+  transform: scale(.85);
 }
 .custom-md .expressive-code .copy-btn.success .success-icon {
   opacity: 1;
-  color: var(--accent);
+  transform: scale(1);
+  color: var(--ink);
 }
-.copy-feedback {
-  position: absolute;
-  right: 100%;
+/* Expressive Code resets descendants, so every custom element needs scoped rules. */
+.custom-md .expressive-code .copy-feedback {
+  display: block;
   white-space: nowrap;
   font: 12px/1.5 var(--sans);
   color: var(--muted);
+  opacity: 1;
+  transition: opacity 150ms ease;
+}
+.custom-md .expressive-code .copy-feedback:empty {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .custom-md .expressive-code .copy-btn,
+  .custom-md .expressive-code .copy-btn svg,
+  .custom-md .expressive-code .copy-feedback {
+    transition: none;
+  }
 }

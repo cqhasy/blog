@@ -1,12 +1,19 @@
 ---
 import ReadingIcon from "./ReadingIcon.astro";
 ---
-<button class="icon-button" id="search-open" type="button" aria-label="搜索文章" aria-haspopup="dialog" aria-controls="reading-search" title="搜索文章（/）"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.5" /><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg></button>
+<button class="icon-button" id="search-open" type="button" aria-label="搜索文章" aria-haspopup="dialog" aria-controls="reading-search" aria-keyshortcuts="/" title="搜索文章（/）"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.5" /><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg></button>
 <dialog id="reading-search" class="search-dialog" aria-labelledby="search-title" data-pagefind-ignore data-base={import.meta.env.BASE_URL} data-production={import.meta.env.PROD}>
 	<div class="search-dialog-header"><h2 id="search-title">找一篇文字</h2><button type="button" id="search-close" class="icon-button" aria-label="关闭搜索"><ReadingIcon name="close" /></button></div>
-	<div class="search-input-wrap"><label for="reading-search-input">搜索标题、内容或标签</label><input type="search" id="reading-search-input" placeholder="输入关键词…" autocomplete="off" /></div>
-	<p id="reading-search-status" class="search-status" role="status" aria-live="polite">输入关键词，搜索分享与随笔。</p>
-	<div class="search-results" id="reading-search-results"></div>
+	<div class="search-input-wrap">
+		<label for="reading-search-input">搜索标题、内容或标签</label>
+		<div class="search-field">
+			<svg class="search-field-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.5" /><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+			<input type="search" id="reading-search-input" placeholder="输入关键词…" autocomplete="off" enterkeyhint="search" aria-describedby="reading-search-status" autofocus />
+			<button type="button" id="search-clear" class="icon-button search-clear" aria-label="清空关键词" hidden><ReadingIcon name="close" size={16} /></button>
+		</div>
+	</div>
+	<div class="search-feedback"><p id="reading-search-status" class="search-status" role="status" aria-live="polite">输入关键词，搜索分享与随笔。</p><span class="search-key-hint"><kbd>esc</kbd> 关闭</span></div>
+	<div class="search-results" id="reading-search-results" aria-busy="false"></div>
 </dialog>
 <script is:inline>
 (() => {
@@ -14,33 +21,56 @@ import ReadingIcon from "./ReadingIcon.astro";
 	const input = document.querySelector("#reading-search-input");
 	const status = document.querySelector("#reading-search-status");
 	const results = document.querySelector("#reading-search-results");
+	const clear = document.querySelector("#search-clear");
+	const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+	const idleMessage = "输入关键词，搜索分享与随笔。";
 	let pagefindPromise;
 	let fallbackPromise;
 	let requestId = 0;
 	let timer;
-	const open = () => { dialog.showModal(); input.focus(); };
+	let closeTimer;
+	let composing = false;
+	const open = () => { if (!dialog.open) { dialog.showModal(); input.focus({ preventScroll: true }); } };
+	const finishClose = () => {
+		clearTimeout(closeTimer);
+		dialog.close();
+		delete dialog.dataset.closing;
+	};
+	const close = () => {
+		if (!dialog.open || dialog.dataset.closing) return;
+		requestId++;
+		clearTimeout(timer);
+		if (reducedMotion.matches) { finishClose(); return; }
+		dialog.dataset.closing = "true";
+		// Keep the native modal and backdrop alive until their exit finishes.
+		closeTimer = setTimeout(finishClose, 220);
+	};
 	document.querySelector("#search-open")?.addEventListener("click", open);
-	document.querySelector("#search-close")?.addEventListener("click", () => dialog.close());
-	dialog.addEventListener("click", (event) => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close(); } });
-	dialog.addEventListener("keydown", (event) => { if (event.key === "Escape") { event.preventDefault(); dialog.close(); } });
-	dialog.addEventListener("close", () => { requestId++; clearTimeout(timer); input.value = ""; results.replaceChildren(); status.textContent = "输入关键词，搜索分享与随笔。"; });
+	document.querySelector("#search-close")?.addEventListener("click", close);
+	dialog.addEventListener("click", (event) => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) close(); } });
+	dialog.addEventListener("cancel", (event) => { event.preventDefault(); close(); });
+	dialog.addEventListener("animationend", (event) => { if (event.target === dialog && event.animationName === "search-dialog-out") finishClose(); });
+	dialog.addEventListener("close", () => { requestId++; clearTimeout(timer); clearTimeout(closeTimer); delete dialog.dataset.closing; composing = false; input.value = ""; clear.hidden = true; results.replaceChildren(); results.setAttribute("aria-busy", "false"); status.textContent = idleMessage; });
 	document.addEventListener("keydown", (event) => {
 		if (event.key === "/" && !event.metaKey && !event.ctrlKey && !(event.target instanceof Element && event.target.closest("input, textarea, select, [contenteditable='true']")) && !dialog.open) { event.preventDefault(); open(); }
 	});
 	const renderResults = (items) => {
 		results.replaceChildren();
+		results.setAttribute("aria-busy", "false");
 		status.textContent = items.length ? `找到 ${items.length} 篇文字` : "没有找到相关文字，试试其他关键词。";
 		for (const item of items.slice(0, 20)) {
 			const link = document.createElement("a");
 			link.href = item.url; link.className = "search-result";
 			const title = document.createElement("strong"); title.textContent = item.title;
 			const excerpt = document.createElement("p"); excerpt.textContent = item.text;
-			link.append(title, excerpt); results.append(link);
+			const arrow = document.createElement("span"); arrow.className = "search-result-arrow"; arrow.textContent = "↗"; arrow.setAttribute("aria-hidden", "true");
+			link.append(title, excerpt, arrow); results.append(link);
 		}
 	};
 	async function search(query, id) {
-		if (!query) { results.replaceChildren(); status.textContent = "输入关键词，搜索分享与随笔。"; return; }
+		if (!query) { results.replaceChildren(); results.setAttribute("aria-busy", "false"); status.textContent = idleMessage; return; }
 		status.textContent = "正在查找…";
+		results.setAttribute("aria-busy", "true");
 		let items;
 		if (dialog.dataset.production === "true") {
 			pagefindPromise ??= import(`${dialog.dataset.base.replace(/\/$/, "")}/pagefind/pagefind.js`).catch(() => null);
@@ -65,7 +95,7 @@ import ReadingIcon from "./ReadingIcon.astro";
 			let fallback;
 			try { fallback = await fallbackPromise; } catch {
 				fallbackPromise = undefined;
-				if (id === requestId && dialog.open) status.textContent = "暂时无法加载搜索，请稍后重试。";
+				if (id === requestId && dialog.open) { results.replaceChildren(); results.setAttribute("aria-busy", "false"); status.textContent = "暂时无法加载搜索，请稍后重试。"; }
 				return;
 			}
 			if (id !== requestId || !dialog.open) return;
@@ -77,6 +107,30 @@ import ReadingIcon from "./ReadingIcon.astro";
 		}
 		renderResults(items);
 	}
-	input.addEventListener("input", () => { clearTimeout(timer); const id = ++requestId; const query = input.value.trim(); timer = setTimeout(() => void search(query, id), 180); });
+	const queueSearch = () => {
+		clearTimeout(timer);
+		const id = ++requestId;
+		const query = input.value.trim();
+		clear.hidden = !input.value;
+		if (!query) { void search(query, id); return; }
+		results.replaceChildren();
+		results.setAttribute("aria-busy", "true");
+		status.textContent = "正在查找…";
+		timer = setTimeout(() => void search(query, id), 180);
+	};
+	input.addEventListener("compositionstart", () => { composing = true; clearTimeout(timer); requestId++; });
+	input.addEventListener("compositionend", () => { composing = false; queueSearch(); });
+	input.addEventListener("input", () => { clear.hidden = !input.value; if (!composing) queueSearch(); });
+	clear.addEventListener("click", () => { input.value = ""; queueSearch(); input.focus(); });
+	input.addEventListener("keydown", (event) => {
+		if (event.key === "ArrowDown" && !event.isComposing && results.firstElementChild) { event.preventDefault(); results.firstElementChild.focus(); }
+	});
+	results.addEventListener("keydown", (event) => {
+		if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+		const link = event.target.closest(".search-result");
+		if (!link) return;
+		event.preventDefault();
+		(event.key === "ArrowDown" ? link.nextElementSibling || link : link.previousElementSibling || input).focus();
+	});
 })();
 </script>

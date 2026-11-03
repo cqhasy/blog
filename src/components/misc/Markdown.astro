@@ -24,21 +24,24 @@ document.addEventListener("click", async (event: MouseEvent) => {
     const code = Array.from(codeElement.querySelectorAll(".code:not(summary *)"))
         .map((line) => line.textContent === "\n" ? "" : line.textContent)
         .join("\n");
-    const feedback = button.querySelector<HTMLElement>(".copy-feedback");
+    const feedback = button.closest(".code-copy-actions")?.querySelector<HTMLElement>(".copy-feedback");
     clearTimeout(copyTimers.get(button));
     try {
         await navigator.clipboard.writeText(code);
         button.classList.add("success");
         button.setAttribute("aria-label", "代码已复制");
+        button.setAttribute("title", "代码已复制");
         if (feedback) feedback.textContent = "已复制";
     } catch {
         button.classList.remove("success");
         button.setAttribute("aria-label", "复制失败，请手动选择代码");
+        button.setAttribute("title", "复制失败，请手动选择代码");
         if (feedback) feedback.textContent = "请手动复制";
     }
     copyTimers.set(button, setTimeout(() => {
         button.classList.remove("success");
         button.setAttribute("aria-label", "复制代码");
+        button.setAttribute("title", "复制代码");
         if (feedback) feedback.textContent = "";
     }, 2000));
 });
